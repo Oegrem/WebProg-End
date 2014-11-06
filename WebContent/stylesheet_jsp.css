@@ -1,0 +1,138 @@
+body {
+    background-color: #ccd2ff;
+}
+
+div {
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+#titel {
+    background-color: white;
+    padding-left: 20px;
+    border: groove;
+    border-color: green;
+    width: 100%;
+    height: 100px;
+}
+#center {
+    height: 550px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#main {
+    background-color: white;
+    background-image: url("../WebProgPic/cat1.gif");
+    background-color: #d3d6d5;
+    float: left;
+    border: groove;
+    border-color: orange;
+    width: 62%;
+    height: 100%;
+}
+#login {
+    font-size: 23px;
+    margin-top: 20%;
+    margin-left: 42%;
+    text-align: left;
+}
+#inputBox {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 150px;
+}
+#loginButton {
+    margin-top: 10px;
+    text-align: center;
+    height: 28px;
+    width: 80px;
+    font-size: 16px;
+}
+
+#startButton {
+    height: 28px;
+    width: 80px;
+    font-size: 16px;
+}
+
+#control {
+    float: right;
+    height: 100%;
+    width: 37%;
+}
+#top-control {
+    background-color: white;
+    padding-left: 20px;
+    height: 51%;
+    width: 100%;
+    border: groove;
+    border-color: black;
+}
+.button {
+    background-color: #c4c4c4;
+    padding-top: 5px;
+    text-align: center;
+    margin-top: 10px;
+    width: 70%;
+    height: 30px;
+    border-radius: 20px;
+}
+
+#bot-control {
+    background-color: white;
+    padding-left: 19px;
+    margin-top: 17px;
+    height: 45%;
+    width: 100%;
+    border: groove;
+    border-color: black;
+}
+
+#questDiv {
+    width: 80%;
+    height: 80%;
+    border: groove;
+    margin-top: 5%;
+    margin-left: 10%;
+    padding: 0% 2%;
+    background-color: #ccd2ff;
+}
+
+.answerDiv {
+    width: 100%;
+    height: 15%;
+    margin-top: 10px;
+    padding: 20px 5px;
+    border: groove;
+    border-color: black;
+    background-color: white;
+}
+
+#table1 {
+    width: 90%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+#errorDiv {
+    color: red;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 1% 3%;
+    background-color: gray;
+    border-color: red;
+    position: fixed;
+    border: groove black;
+    margin-top: 5%;
+}
+
+footer {
+    background-color: white;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding-left: 10px;
+    width: 100%;
+    border: groove;
+    border-color: red;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Fragekatalog">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Question" type="Questions" minOccurs="1"
+					maxOccurs="100" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="Questions">
+		<xs:sequence>
+			<xs:element name="Frage" type="xs:string" />
+			<xs:element name="AntwortTrue" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="Antwort" type="xs:string" minOccurs="3"
+				maxOccurs="3" />
+			<xs:element name="Zeit" type="xs:int" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="string">
+		<xs:restriction base="xs:string"></xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

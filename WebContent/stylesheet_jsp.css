@@ -22,7 +22,7 @@ div {
 
 #main {
     background-color: white;
-    background-image: url("../WebProgPic/cat1.gif");
+    background-image: url("./WebProgPic/cat1.gif");
     background-color: #d3d6d5;
     float: left;
     border: groove;

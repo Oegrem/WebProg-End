@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Fragekatalog>
+	<Question>
+		<Frage>Welcher Mechanismus kann unter Unix zur Kommunikation über das Netzwerk verwendet werden?</Frage>
+		<AntwortTrue>Sockets</AntwortTrue>
+		<Antwort>Message Queues</Antwort>
+		<Antwort>Pipes</Antwort>
+		<Antwort>Semaphore</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Die Hauptstadt von Italien ist:</Frage>
+		<AntwortTrue>Rom</AntwortTrue>
+		<Antwort>Athen</Antwort>
+		<Antwort>Bonn</Antwort>
+		<Antwort>Madrid</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Die Quadratwurzel von 100 ist:</Frage>
+		<AntwortTrue>10</AntwortTrue>
+		<Antwort>2,76</Antwort>
+		<Antwort>5</Antwort>
+		<Antwort>1</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>1 + 1 = ?</Frage>
+		<AntwortTrue>2</AntwortTrue>
+		<Antwort>1</Antwort>
+		<Antwort>3</Antwort>
+		<Antwort>4</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Spinnen...</Frage>
+		<AntwortTrue>...haben 8 Beine</AntwortTrue>
+		<Antwort>...sind Insekten</Antwort>
+		<Antwort>...sind Vögel</Antwort>
+		<Antwort>...werden bis zu 100 Jahre alt</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Die Hauptstadt von Spanien ist:</Frage>
+		<AntwortTrue>Madrid</AntwortTrue>
+		<Antwort>Barcelona</Antwort>
+		<Antwort>Rom</Antwort>
+		<Antwort>London</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+</Fragekatalog>
+

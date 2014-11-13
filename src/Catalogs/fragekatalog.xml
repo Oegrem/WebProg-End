@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Fragekatalog>
+	<Question>
+	<Frage>Frage?123</Frage>
+	<AntwortTrue>Antwort1</AntwortTrue>
+	<Antwort>Antwort2</Antwort>
+	<Antwort>Antwort3</Antwort>
+	<Antwort>Antwort4</Antwort>
+	<Zeit>10</Zeit>
+	</Question>
+	
+		<Question>
+	<Frage>Frage?765</Frage>
+	<AntwortTrue>Antwort5</AntwortTrue>
+	<Antwort>Antwort6</Antwort>
+	<Antwort>Antwort7</Antwort>
+	<Antwort>Antwort8</Antwort>
+	<Zeit>2000</Zeit>
+	</Question>
+</Fragekatalog>
+
+

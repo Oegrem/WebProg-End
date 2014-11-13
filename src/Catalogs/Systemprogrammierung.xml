@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Fragekatalog>
+	<Question>
+		<Frage>Ein Thread soll auf ein durch einen anderen Thread ausgelöstes Ereignis warten. Welcher Mechanismus ist geeignet?</Frage>
+		<AntwortTrue>nur Semaphore</AntwortTrue>
+		<Antwort>nur Mutex</Antwort>
+		<Antwort>weder Semaphore noch Mutexe</Antwort>
+		<Antwort>sowohl Semaphore als auch Mutexe</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Der Systemaufruf fork...</Frage>
+		<AntwortTrue>...erzeugt einen neuen Prozess, der das gleiche Programm ausführt.</AntwortTrue>
+		<Antwort>...erzeugt einen neuen Prozess, der ein anderes Programm ausführt.</Antwort>
+		<Antwort>...erzeugt einen neuen Thread.</Antwort>
+		<Antwort>...ist das logische Gegenstück zum Aufruf knife.</Antwort>
+		<Zeit>20</Zeit>
+	</Question>
+	<Question>
+		<Frage>In einem Signalhandler...</Frage>
+		<AntwortTrue>...dürfen nur bestimmte Funktionen aufgerufen werden.</AntwortTrue>
+		<Antwort>...kann man problemlos alles machen, was man auch im regulären Programmcode macht.</Antwort>
+		<Antwort>...dürfen keine Fließkommaoperationen durchgeführt werden.</Antwort>
+		<Antwort>...ist nur der Systemaufruf write verboten.</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Sie möchten eine Datenstruktur vor gleichzeitigem Zugriff aus mehreren Threads schützen. Welcher Mechanismus ist dafür geeignet?</Frage>
+		<AntwortTrue>sowohl Semaphore als auch Mutexe</AntwortTrue>
+		<Antwort>nur Semaphore</Antwort>
+		<Antwort>nur Mutexe</Antwort>
+		<Antwort>nur Signale</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Es soll darauf gewartet werden, dass Daten eintreffen, allerdings nur eine bestimmte Zeit. Wie kann man das umsetzen?</Frage>
+		<AntwortTrue>mit dem Systemaufruf select</AntwortTrue>
+		<Antwort>durch einen zusätzlichen Timeout-Parameter bei read oder recv</Antwort>
+		<Antwort>gar nicht</Antwort>
+		<Antwort>durch Setzen des Timeout-Status mit fcntl</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Mit welchem Systemaufruf kann man den Port festlegen, auf dem ein Serverprogramm auf Verbindungen wartet?</Frage>
+		<AntwortTrue>bind</AntwortTrue>
+		<Antwort>accept</Antwort>
+		<Antwort>setsock</Antwort>
+		<Antwort>open</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Während eines read-Aufrufs tritt ein Signal auf und wird durch einen Signalhandler abgearbeitet (SA_RESTART nicht gesetzt). Was passiert?</Frage>
+		<AntwortTrue>Der Aufruf kehrt unter Umständen mit weniger Daten als angefordert oder EINTR zurück.</AntwortTrue>
+		<Antwort>Es werden auf jeden Fall so viele Daten gelesen wie angefordert.</Antwort>
+		<Antwort>Die Daten gehen verloren.</Antwort>
+		<Antwort>Das Programm wird in solchen Fällen vom Betriebssystem abgebrochen.</Antwort>
+		<Zeit>45</Zeit>
+	</Question>
+	<Question>
+		<Frage>Beim Lesen aus einer Pipe meldet der Aufruf read das Dateiende, wenn...</Frage>
+		<AntwortTrue>...alle Schreib-Deskriptoren für die Pipe geschlossen und alle Daten aus der Pipe gelesen wurden.</AntwortTrue>
+		<Antwort>...der Leser ein spezielles Signal erhält.</Antwort>
+		<Antwort>...der schreibende Prozess fork aufruft.</Antwort>
+		<Antwort>...^D in die Pipe geschrieben wird.</Antwort>
+		<Zeit>20</Zeit>
+	</Question>
+	<Question>
+		<Frage>Was passiert mit einem Shared-Memory-Objekt, wenn es nicht manuell gelöscht wird?</Frage>
+		<AntwortTrue>Es bleibt weiterhin bestehen, bis es von Hand oder durch einen Reboot gelöscht wurde.</AntwortTrue>
+		<Antwort>Es wird zerstört, wenn sich der Prozess beendet, der es erzeugt hat.</Antwort>
+		<Antwort>Es wird zerstört, wenn kein Prozess mehr auf es zugreift.</Antwort>
+		<Antwort>Der Garbage-Collector des Betriebssystems zerstört es, wenn der Speicher knapp wird.</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Welches dieser Signale kann nicht abgefangen werden?</Frage>
+		<AntwortTrue>SIGKILL</AntwortTrue>
+		<Antwort>SIGTERM</Antwort>
+		<Antwort>SIGINT</Antwort>
+		<Antwort>SIGPIPE</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Was ist ein Zombie-Prozess unter Unix?</Frage>
+		<AntwortTrue>Ein Prozess, dessen Exit-Status noch nicht mittels wait abgefragt wurde.</AntwortTrue>
+		<Antwort>Ein Daemon-Prozess, der durch den Aufruf zombie immun gegen das KILL-Signal gemacht wurde.</Antwort>
+		<Antwort>Ein Prozess, der nur nachts gestartet werden kann.</Antwort>
+		<Antwort>Ein Computervirus.</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+	<Question>
+		<Frage>Welches Signal (sofern nicht ignoriert) empfängt ein Elternprozess, wenn sich einer seiner Kindprozesse beendet?</Frage>
+		<AntwortTrue>SIGCHILD</AntwortTrue>
+		<Antwort>SIGSYS</Antwort>
+		<Antwort>SIGSEGV</Antwort>
+		<Antwort>SIGABRT</Antwort>
+		<Zeit>30</Zeit>
+	</Question>
+</Fragekatalog>
+

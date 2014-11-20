@@ -9,6 +9,7 @@
 	import="java.util.*, java.util.Map, de.fhwgt.quiz.application.*, de.fhwgt.quiz.error.*"%>
 
 <%
+String startShow = "hidden";
 	Quiz quiz = Quiz.getInstance();
 	QuizError quizError = new QuizError();
 
@@ -17,6 +18,9 @@
 	String username = request.getParameter("username");
 	if (username != null) {
 		Player pl = quiz.createPlayer(username, quizError);
+		if(quiz.getPlayerList().size() >= 3){
+			startShow = "visible";
+		}
 	}
 	FilesystemLoader cLoader = new FilesystemLoader("Catalogs");
 	quiz.initCatalogLoader(cLoader);
@@ -45,6 +49,7 @@
 						value=""><br /> <input type="submit" id="loginButton"
 						value="LogIn" />
 				</form>
+				<input style="visibility: <%= startShow %>" type="submit" value="Start" id="startButton" />
 			</div>
 		</div>
 		<div id="control">
@@ -78,7 +83,7 @@
 					<tbody>
 						<%
 							for (Player player : quiz.getPlayerList()) {
-								out.print("<tr><td>" + player.getName() + "</td><td>"
+								out.print("<tr><td>" + player.getName().replace('<', ' ') + "</td><td>"
 										+ Long.toString(player.getScore()) + "</td></tr>");
 							}
 						%>

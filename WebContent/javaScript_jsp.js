@@ -16,6 +16,10 @@ function init() {
     document.getElementById("table1")
     .getElementsByTagName("tbody")[0].addEventListener("mousedown", tableClickListener, false);
 
+    var startButton = document.getElementById("startButton");
+    
+    startButton.addEventListener("click", StartButtonClick, false);
+    
     laufSchrift();
 }
 
@@ -118,7 +122,6 @@ function StartButtonClick(event) {
         question.style.fontSize = "16px";
 
         questDiv.id = "questDiv";
-
         question.textContent = "Frage1: Welcher Mechanismus kann unter Unix zur Kommunikation �ber das Netzwerk verwendet werden?";
 
         var title = document.createElement("h3");

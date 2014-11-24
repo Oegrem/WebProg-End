@@ -41,56 +41,11 @@ String startShow = "hidden";
 		</div>
 	</header>
 	<div id="center">
-		<div id="main">
-			<div id="login">
-				Username<br />
-				<form>
-					<input name="username" type="text" maxlength="140" id="inputBox"
-						value=""><br /> <input type="submit" id="loginButton"
-						value="LogIn" />
-				</form>
-				<input style="visibility: <%= startShow %>" type="submit" value="Start" id="startButton" />
-			</div>
-		</div>
-		<div id="control">
-			<div id="top-control">
-				<h2>
-					<img src="WebProgPic/katalog.png" alt=""> Kataloge
-				</h2>
-				<%
-					for (Map.Entry<String, Catalog> cEntry : cMap.entrySet()) {
-						String cName = cEntry.getKey();
-						out.print("<div class='button'>"+cName.substring(0, cName.indexOf('.'))+"</div>");
-
-					}
-				%>
-			</div>
-			<div id="bot-control">
-				<h2>
-					<img src="WebProgPic/highscore.png" alt=""> Highscore
-				</h2>
-				<table id="table1">
-					<thead>
-						<tr>
-							<td>Player
-								<hr />
-							</td>
-							<td>Score
-								<hr />
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<%
-							for (Player player : quiz.getPlayerList()) {
-								out.print("<tr><td>" + player.getName().replace('<', ' ') + "</td><td>"
-										+ Long.toString(player.getScore()) + "</td></tr>");
-							}
-						%>
-					</tbody>
-				</table>
-			</div>
-		</div>
+<%@include file="main.jsp" %>
+<div id="control">
+<%@include file="catalogs.jsp"  %>
+<%@include file="highscore.jsp"  %>
+</div>
 	</div>
 	<footer>
 		<p>&Dagger; Footer &Dagger;</p>

@@ -33,5 +33,8 @@
 	<classpathentry kind="lib" path="C:/apache-tomcat-8.0.14/lib/tomcat-util-scan.jar"/>
 	<classpathentry kind="lib" path="C:/apache-tomcat-8.0.14/lib/tomcat-websocket.jar"/>
 	<classpathentry kind="lib" path="C:/apache-tomcat-8.0.14/lib/websocket-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tobias/Documents/AI/4. Semester/Web-Programmierung/javax.json-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tobias/Documents/AI/4. Semester/Web-Programmierung/org.json-20120521.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tobias/workspace/WebServlet/WebContent/WEB-INF/lib/org.json-20120521.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

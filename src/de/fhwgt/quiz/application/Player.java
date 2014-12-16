@@ -7,7 +7,6 @@ import java.util.TimerTask;
 import de.fhwgt.quiz.error.QuizError;
 import de.fhwgt.quiz.error.QuizErrorType;
 
-
 /**
  * Player class which encapsulates data and logic associated with a player.
  *

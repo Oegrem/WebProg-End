@@ -3,10 +3,27 @@
  */
 document.addEventListener("DOMContentLoaded", init, false);
 
+var activeCatalog = "";
+
 var request;
 
 var socket;
 var readyToSend = false;
+
+var playerId = -1;
+
+var curQuestion = "";
+var curAnswer1 = "";
+var curAnswer2 = "";
+var curAnswer3 = "";
+var curAnswer4 = "";
+var curTimeOut = 0;
+
+var curSelection = -1;
+
+var curPlayerList;
+
+var isQuestionActive = false;
 
 function ajaxServerResponse() {
 	if (request.readyState == 4) {
@@ -35,11 +52,14 @@ function loadCatalog() {
 
 function sseDataListener(event) {
 	var playerList = JSON.parse(event.data).playerList;
-	console.log(playerList);
 	var table = document.getElementById("table1").getElementsByTagName("tbody")[0];
-	while(table.firstChild){
+	while (table.firstChild) {
 		table.removeChild(table.firstChild);
 	}
+	playerList.sort(function(a, b) {
+		return b.score-a.score;
+	});
+	curPlayerList = playerList;
 	for (var i = 0; i < playerList.length; i++) {
 		var row = table.insertRow();
 
@@ -49,6 +69,21 @@ function sseDataListener(event) {
 		var cellScore = row.insertCell();
 		cellScore.textContent = playerList[i].score;
 	}
+	var sButton = document.getElementById("startButton");
+	if (sButton != null) {
+		if (playerId == 0) {
+			if (playerList.length > 1 && sButton.disabled) {
+				sButton.disabled = false;
+				sButton.style.fontSize = "20px";
+				sButton.textContent = "Start";
+			}
+			if (playerList.length < 2 && sButton.disabled == false) {
+				sButton.disabled = true;
+				sButton.style.fontSize = "16px";
+				sButton.textContent = "Warte auf weitere Spieler...";
+			}
+		}
+	}
 }
 
 function socketReceive(message) {
@@ -57,20 +92,100 @@ function socketReceive(message) {
 	console.log(sMessage.messageType);
 	switch (sMessage.messageType) {
 	case 2:
-		console.log("Player ID: "+sMessage.playerId);
+		console.log("Player ID: " + sMessage.playerId);
+		playerId = sMessage.playerId;
+		login();
+		break;
+	case 5:
+		console.log("Cat changed: " + sMessage.catName);
+		activeCatalog = sMessage.catName;
+		chooseCatalog(activeCatalog);
+		break;
+	case 7:
+		showGameDiv();
+		socketSend(8);
+		break;
+	case 9:
+		curQuestion = sMessage.question;
+		curAnswer1 = sMessage.answer1;
+		curAnswer2 = sMessage.answer2;
+		curAnswer3 = sMessage.answer3;
+		curAnswer4 = sMessage.answer4;
+		curTimeOut = sMessage.timeOut;
+		showQuestion();
+		isQuestionActive = true;
+		break;
+	case 11:
+		console.log("Correct: " + sMessage.correct);
+		
+		document.getElementById(curSelection).style.borderColor = "red";
+		document.getElementById(curSelection).style.backgroundColor = "#FF0800";
+		
+		document.getElementById(sMessage.correct).style.borderColor = "green";
+		document.getElementById(sMessage.correct).style.backgroundColor = "#8DB600";
+				
+		isQuestionActive = false;
+		window.setTimeout(function() {
+			socketSend(8);
+		}, 2000)
+		break;
+	case 12:
+		console.log("Spiel ende!");
+		GameOver(sMessage);
+		break;
+	case 255:
+		if(sMessage.fatal == 1){
+		ErrorBlinken(sMessage.errorMessage);
+		}else{
+			console.log("Warning: "+sMessage.errorMessage);
+		}
 		break;
 	default:
 		break;
 	}
 }
 
-function socketSend() {
+function socketSend(type) {
 	if (readyToSend == true) {
 		// Senden
-		var messageType = 1;
-		var loginName = document.getElementById("inputBox").value;
-		
-		var jsonSend = JSON.stringify({messageType:messageType, loginName:loginName});
+		var messageType = type;
+		var jsonSend;
+		var selection = curSelection;
+		switch (messageType) {
+		case 1:
+			var loginName = document.getElementById("inputBox").value;
+			jsonSend = JSON.stringify({
+				messageType : messageType,
+				loginName : loginName
+			});
+			break;
+		case 5:
+			var catName = activeCatalog;
+			jsonSend = JSON.stringify({
+				messageType : messageType,
+				catName : catName
+			});
+			break;
+		case 7:
+			jsonSend = JSON.stringify({
+				messageType : messageType
+			});
+			break;
+		case 8:
+			jsonSend = JSON.stringify({
+				messageType : messageType
+			});
+			break;
+		case 10:
+			jsonSend = JSON.stringify({
+				messageType : messageType,
+				selection : selection
+			});
+			break;
+		default:
+			break;
+		}
+
 		socket.send(jsonSend);
 	}
 }
@@ -78,7 +193,7 @@ function socketSend() {
 function init() {
 	var buttons = document.getElementsByClassName("button");
 
-	var url = 'ws://localhost:8080/WebServlet/SocketServlet';
+	var url = 'ws://localhost:8080/WebServlet/SocketHandler';
 	socket = new WebSocket(url);
 
 	socket.onopen = function() {
@@ -90,7 +205,7 @@ function init() {
 	}
 
 	socket.onclose = function(event) {
-		alert("Websockets closing " + event.code);
+		console.log("Websockets closing " + event.code);
 	}
 
 	socket.onmessage = socketReceive;
@@ -104,14 +219,13 @@ function init() {
 
 	var loginButton = document.getElementById("loginButton");
 
-	loginButton.addEventListener("click", socketSend, false);
+	loginButton.addEventListener("click", function() {
+		socketSend(1);
+	}, false);
 
 	document.getElementById("table1").getElementsByTagName("tbody")[0]
 			.addEventListener("mousedown", tableClickListener, false);
 	loadCatalog();
-	var startButton = document.getElementById("startButton");
-
-	startButton.addEventListener("click", StartButtonClick, false);
 
 	laufSchrift();
 
@@ -170,6 +284,48 @@ function laufSchrift() {
 
 }
 
+function GameOver(ranking) {
+	var questDiv = document.getElementById("questDiv");
+	while (questDiv.firstChild) {
+		questDiv.removeChild(questDiv.firstChild);
+	}
+	var title = document.createElement("h3");
+	title.textContent = "Game Over!";
+	questDiv.appendChild(title);
+	if(ranking.isAllOver){
+		for (var i = 0; i < curPlayerList.length; i++) {
+			var p = document.createElement("h2");
+			p.textContent = "Platz "+(i+1)+": "+curPlayerList[i].name+" "+curPlayerList[i].score;
+			questDiv.appendChild(p);
+		}
+	}else{
+		var p = document.createElement("p");
+	p.textContent = "Warte bis alle Spieler fertig sind...";
+	questDiv.appendChild(p);
+	}
+	
+	
+}
+
+function login() {
+	var loginDiv = document.getElementById("login");
+	loginDiv.removeChild(document.getElementById("inputBox"));
+	loginDiv.removeChild(document.getElementById("loginButton"));
+	loginDiv.textContent = "";
+	var startButton = document.createElement("button");
+	startButton.id = "startButton";
+	startButton.disabled = true;
+	startButton.addEventListener("click", StartButtonClick, false);
+	if (playerId == 0) {
+		startButton.textContent = "Warte auf weitere Spieler...";
+	} else {
+		startButton.textContent = "Warte auf Start durch Spielleiter...";
+	}
+
+	loginDiv.appendChild(startButton);
+
+}
+
 function hoverButton(event) {
 	var button = event.target;
 	if (button.isChosen != true) {
@@ -186,68 +342,108 @@ function leaveButton(event) {
 
 function clickButton(event) {
 	var button = event.target;
-	if (button.isChosen != true) {
-		var buttons = document.getElementsByClassName("button");
-		for (var c = 0; c < buttons.length; c++) {
-			if (buttons[c].isChosen == true) {
-				buttons[c].style.backgroundColor = "#c4c4c4";
-				buttons[c].style.border = "none";
-				buttons[c].style.fontWeight = "normal";
-				buttons[c].isChosen = false;
-			}
+	if (playerId == 0) {
+		if (button.isChosen != true) {
+			chooseCatalog(button.textContent);
+			socketSend(5);
 		}
-		button.style.backgroundColor = "yellow";
-		button.style.border = "groove";
-		button.style.borderColor = "blue";
-		button.style.fontWeight = "bold";
-		button.isChosen = true;
-	} else {
-		button.style.backgroundColor = "green";
-		button.style.border = "none";
-		button.style.fontWeight = "normal";
-		button.isChosen = false;
 	}
 }
 
+function chooseCatalog(catName) {
+	var buttons = document.getElementsByClassName("button");
+	for (var c = 0; c < buttons.length; c++) {
+		if (buttons[c].isChosen == true) {
+			buttons[c].style.backgroundColor = "#c4c4c4";
+			buttons[c].style.border = "none";
+			buttons[c].style.fontWeight = "normal";
+			buttons[c].isChosen = false;
+		}
+		if (buttons[c].textContent == catName) {
+			buttons[c].style.backgroundColor = "yellow";
+			buttons[c].style.border = "groove";
+			buttons[c].style.borderColor = "blue";
+			buttons[c].style.fontWeight = "bold";
+			buttons[c].isChosen = true;
+			activeCatalog = buttons[c].textContent;
+		}
+	}
+}
+
+function showGameDiv() {
+	var mainDiv = document.getElementById("main");
+	mainDiv.removeChild(document.getElementById("login"));
+	var questDiv = document.createElement("div");
+	var question = document.createElement("div");
+	question.id = "QuestionText";
+	question.style.fontSize = "16px";
+
+	questDiv.id = "questDiv";
+
+	var title = document.createElement("h3");
+	title.id = "GameDivTitle";
+	title.textContent = "Fragekatalog: " + activeCatalog;
+	questDiv.appendChild(title);
+	questDiv.appendChild(question);
+
+	var answers = [];
+
+	for (var c = 0; c < 4; c++) {
+		answers[c] = document.createElement("div");
+		answers[c].className = "answerDiv";
+		answers[c].id = c;
+		answers[c].addEventListener("mouseover", function(event) {
+			if (isQuestionActive) {
+				event.target.style.borderColor = "red";
+				event.target.style.backgroundColor = "#FF3333";
+			}
+		}, false);
+		answers[c].addEventListener("mouseleave", function(event) {
+			if (isQuestionActive) {
+				event.target.style.borderColor = "black";
+				event.target.style.backgroundColor = "white";
+			}
+		}, false);
+		answers[c].addEventListener("click", function(event) {
+			if (isQuestionActive) {
+				curSelection = event.target.id;
+				console.log("clicked: " + event.target.id);
+				socketSend(10);
+			}
+		}, false);
+		questDiv.appendChild(answers[c]);
+	}
+	var timeOut = document.createElement("p");
+	timeOut.id = "timeOut";
+	questDiv.appendChild(timeOut);
+	mainDiv.appendChild(questDiv);
+}
+
+function showQuestion() {
+
+	document.getElementById("QuestionText").textContent = curQuestion;
+
+	var answerText = [ curAnswer1, curAnswer2, curAnswer3, curAnswer4 ];
+
+	var answers = document.getElementsByClassName("answerDiv");
+	for (var c = 0; c < 4; c++) {
+		answers[c].style.borderColor = "black";
+		answers[c].style.backgroundColor = "white";
+		answers[c].textContent = answerText[c];
+	}
+	document.getElementById("timeOut").textContent = "Time Out: " + curTimeOut
+			+ " Sekunden";
+}
+
 function StartButtonClick(event) {
-	var catalogs = document.getElementsByClassName("button");
-	var activeCatalog;
-	var isChosen = false;
-	for (var c = 0; c < catalogs.length; c++) {
-		if (catalogs[c].isChosen == true) {
-			activeCatalog = catalogs[c].textContent;
-			isChosen = true;
+	if (playerId == 0) {
+		var catalogs = document.getElementsByClassName("button");
+		if (activeCatalog == "") {
+			ErrorBlinken("Kein Katalog ausgew�hlt!");
+		} else {
+			socketSend(7);
 		}
 	}
-	if (isChosen == false) {
-		ErrorBlinken("Kein Katalog ausgew�hlt!");
-	} else {
-		var mainDiv = document.getElementById("main");
-		mainDiv.removeChild(document.getElementById("login"));
-		var questDiv = document.createElement("div");
-		var question = document.createElement("div");
-		question.style.fontSize = "16px";
-
-		questDiv.id = "questDiv";
-		question.textContent = "Frage1: Welcher Mechanismus kann unter Unix zur Kommunikation �ber das Netzwerk verwendet werden?";
-
-		var title = document.createElement("h3");
-		title.textContent = "Fragekatalog: " + activeCatalog;
-		questDiv.appendChild(title);
-		questDiv.appendChild(question);
-		var answerText = [ "Pipes", "Semaphore", "Sockets (Richtig)",
-				"Message Queues" ];
-
-		var answers = new Array();
-		for (var c = 0; c < 4; c++) {
-			answers[c] = document.createElement("div");
-			answers[c].className = "answerDiv";
-			answers[c].textContent = answerText[c];
-			questDiv.appendChild(answers[c]);
-		}
-		mainDiv.appendChild(questDiv);
-	}
-
 }
 
 function tableClickListener(event) {

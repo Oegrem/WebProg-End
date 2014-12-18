@@ -202,6 +202,12 @@ public class SocketHandler {
 							// ignore
 						}
 					}
+					for(Player pTemp : q.getPlayerList()){
+						q.removePlayer(pTemp, qError);
+						if(qError.isSet()){
+							System.out.println(qError.getDescription());
+						}	
+					}
 				}else{
 					System.out.println("Spieler ende");
 					try {
@@ -228,7 +234,7 @@ public class SocketHandler {
 				session.getBasicRemote().sendText(
 						new SocketMessage(9, new Object[] { question.getQuestion(),
 								answers[0], answers[1], answers[2], answers[3],
-								(int) question.getTimeout() }).GetJsonString());
+								(int) (question.getTimeout()/1000) }).GetJsonString());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
